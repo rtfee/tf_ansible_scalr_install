@@ -62,7 +62,7 @@ provisioner "remote-exec" {
   provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
-        "sudo ansible-playbook /etc/ansible/playbooks/install/scalr/install.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/install.yml --limit ${self.public_ip} --verbose"
       ]
   }
 
