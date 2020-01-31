@@ -32,7 +32,9 @@ data "null_data_source" "values" {
     }
 }
 
-resource "aws_instance" "scalr" {
+#install mysql
+
+resource "aws_instance" "mysql1" {
   ami                    = var.ami
   instance_type          = var.instance_type
   subnet_id              = var.subnet
@@ -62,7 +64,47 @@ provisioner "remote-exec" {
   provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/install.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/initial_setup.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/install_mysql_local.yml --limit ${self.public_ip} --verbose"
+      ]
+  }
+
+}
+
+#install worker
+
+resource "aws_instance" "worker" {
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  subnet_id              = var.subnet
+  vpc_security_group_ids = var.sg
+  key_name               = var.key
+
+connection {
+        host	= var.remote_host
+        type     = "ssh"
+        user     = "ubuntu"
+        private_key = "${file(local.ssh_private_key_file)}"
+        timeout  = "20m"
+}
+  
+provisioner "file" {
+  source      = "./scripts/script.sh"
+  destination = "/tmp/script.sh"
+}
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo chmod +x /tmp/script.sh",
+    "sudo /tmp/script.sh "
+  ]
+}
+
+  provisioner "remote-exec" {
+      inline = [
+        "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/initial_setup.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/install_worker_local.yml --limit ${self.public_ip} --verbose"
       ]
   }
 
