@@ -109,3 +109,27 @@ provisioner "remote-exec" {
   }
 
 }
+
+resource "null_resource" "create_config" {
+  
+  connection {
+        host	= aws_instance.mysql1.public_ip
+        type     = "ssh"
+        user     = "ubuntu"
+        private_key = "${file(local.ssh_private_key_file)}"
+        timeout  = "20m"
+  }
+
+  provisioner "file" {
+      source = "./SCRIPTS/scalr_install_set_config.sh"
+      destination = "/var/tmp/scalr_install_set_config.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /var/tmp/scalr_install_set_config.sh",
+      "/var/tmp/scalr_install_set_config.sh ${aws_instance.worker.private_ip}",
+    ]
+  }
+
+}
