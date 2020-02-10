@@ -65,7 +65,46 @@ provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_mysql_local.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_mysql1_local.yml --limit ${self.public_ip} --verbose"
+      ]
+  }
+
+}
+
+#install mysql2
+
+resource "aws_instance" "mysql2" {
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  subnet_id              = var.subnet
+  vpc_security_group_ids = var.sg
+  key_name               = var.key
+
+connection {
+        host	= var.remote_host
+        type     = "ssh"
+        user     = "ubuntu"
+        private_key = "${file(local.ssh_private_key_file)}"
+        timeout  = "20m"
+}
+  
+provisioner "file" {
+  source      = "./scripts/script.sh"
+  destination = "/tmp/script.sh"
+}
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo chmod +x /tmp/script.sh",
+    "sudo /tmp/script.sh "
+  ]
+}
+
+  provisioner "remote-exec" {
+      inline = [
+        "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_mysql2_local.yml --limit ${self.public_ip} --verbose"
       ]
   }
 
@@ -110,26 +149,119 @@ provisioner "remote-exec" {
 
 }
 
-resource "null_resource" "create_config" {
-  
-  connection {
-        host	= aws_instance.mysql1.public_ip
+#install influx
+
+resource "aws_instance" "influx" {
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  subnet_id              = var.subnet
+  vpc_security_group_ids = var.sg
+  key_name               = var.key
+
+connection {
+        host	= var.remote_host
         type     = "ssh"
         user     = "ubuntu"
         private_key = "${file(local.ssh_private_key_file)}"
         timeout  = "20m"
-  }
+}
+  
+provisioner "file" {
+  source      = "./scripts/script.sh"
+  destination = "/tmp/script.sh"
+}
 
-  provisioner "file" {
-      source = "./SCRIPTS/scalr_install_set_config.sh"
-      destination = "/var/tmp/scalr_install_set_config.sh"
-  }
+provisioner "remote-exec" {
+  inline = [
+    "sudo chmod +x /tmp/script.sh",
+    "sudo /tmp/script.sh "
+  ]
+}
 
   provisioner "remote-exec" {
-    inline = [
-      "chmod +x /var/tmp/scalr_install_set_config.sh",
-      "/var/tmp/scalr_install_set_config.sh ${aws_instance.worker.private_ip}",
-    ]
+      inline = [
+        "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_influx_local.yml --limit ${self.public_ip} --verbose"
+      ]
+  }
+
+}
+
+#install proxy1
+
+resource "aws_instance" "proxy1" {
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  subnet_id              = var.subnet
+  vpc_security_group_ids = var.sg
+  key_name               = var.key
+
+connection {
+        host	= var.remote_host
+        type     = "ssh"
+        user     = "ubuntu"
+        private_key = "${file(local.ssh_private_key_file)}"
+        timeout  = "20m"
+}
+  
+provisioner "file" {
+  source      = "./scripts/script.sh"
+  destination = "/tmp/script.sh"
+}
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo chmod +x /tmp/script.sh",
+    "sudo /tmp/script.sh "
+  ]
+}
+
+  provisioner "remote-exec" {
+      inline = [
+        "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_proxy_local.yml --limit ${self.public_ip} --verbose"
+      ]
+  }
+
+}
+
+#install proxy2
+
+resource "aws_instance" "proxy2" {
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  subnet_id              = var.subnet
+  vpc_security_group_ids = var.sg
+  key_name               = var.key
+
+connection {
+        host	= var.remote_host
+        type     = "ssh"
+        user     = "ubuntu"
+        private_key = "${file(local.ssh_private_key_file)}"
+        timeout  = "20m"
+}
+  
+provisioner "file" {
+  source      = "./scripts/script.sh"
+  destination = "/tmp/script.sh"
+}
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo chmod +x /tmp/script.sh",
+    "sudo /tmp/script.sh "
+  ]
+}
+
+  provisioner "remote-exec" {
+      inline = [
+        "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_proxy_local.yml --limit ${self.public_ip} --verbose"
+      ]
   }
 
 }
