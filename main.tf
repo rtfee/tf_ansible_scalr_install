@@ -66,7 +66,7 @@ provisioner "remote-exec" {
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_mysql1_local.yml --limit ${self.public_ip} --verbose",
-        "echo 'mysql1 : ${self.public_ip}' >> /etc/ansible/playbooks/install_multi_scalr/vars.yml"
+        "sudo sh -c 'echo mysql1 : ${self.public_ip} >> /etc/ansible/playbooks/install_multi_scalr/vars.yml'"
       ]
   }
 
@@ -105,7 +105,8 @@ provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_mysql2_local.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_mysql2_local.yml --limit ${self.public_ip} --verbose",
+        "sudo sh -c 'echo mysql2 : ${self.public_ip} >> /etc/ansible/playbooks/install_multi_scalr/vars.yml'"
       ]
   }
 
@@ -144,7 +145,8 @@ provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_worker_local.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_worker_local.yml --limit ${self.public_ip} --verbose",
+        "sudo sh -c 'echo worker : ${self.public_ip} >> /etc/ansible/playbooks/install_multi_scalr/vars.yml'"
       ]
   }
 
@@ -183,7 +185,8 @@ provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_influx_local.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_influx_local.yml --limit ${self.public_ip} --verbose",
+        "sudo sh -c 'echo influx : ${self.public_ip} >> /etc/ansible/playbooks/install_multi_scalr/vars.yml'"
       ]
   }
 
@@ -222,7 +225,8 @@ provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_proxy_local.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_proxy_local.yml --limit ${self.public_ip} --verbose",
+        "sudo sh -c 'echo proxy1 : ${self.public_ip} >> /etc/ansible/playbooks/install_multi_scalr/vars.yml'"
       ]
   }
 
@@ -261,7 +265,8 @@ provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/initial_setup.yml --limit ${self.public_ip} --verbose",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_proxy_local.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/install_proxy_local.yml --limit ${self.public_ip} --verbose",
+        "sudo sh -c 'echo proxy2 : ${self.public_ip} >> /etc/ansible/playbooks/install_multi_scalr/vars.yml'"
       ]
   }
 
