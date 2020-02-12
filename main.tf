@@ -269,7 +269,7 @@ provisioner "remote-exec" {
 # Copy secrets from proxy to other Servers
 
 resource "null_resource" "create_config" {
-  depends_on = [aws_instance_mysql1]
+  depends_on = [aws_instance.mysql1]
 
   connection {
         host	= var.remote_host
