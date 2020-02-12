@@ -296,8 +296,5 @@ provisioner "remote-exec" {
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/create_secrets.yml --limit ${aws_instance.mysql1.public_ip} --verbose"
       ]
-  }
-  
-
-
+  } 
 }
