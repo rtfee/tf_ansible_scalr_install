@@ -296,10 +296,10 @@ provisioner "remote-exec" {
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/create_secrets.yml --limit ${aws_instance.mysql1.public_ip} --verbose",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/fetch_secrets.yml --limit ${aws_instance.mysql1.public_ip} --verbose",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.mysql2.public_ip} --verbose"
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.proxy1.public_ip} --verbose"
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.proxy2.public_ip} --verbose"
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.worker.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.mysql2.public_ip} --verbose",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.proxy1.public_ip} --verbose",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.proxy2.public_ip} --verbose",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.worker.public_ip} --verbose",
         "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/copy_secrets.yml --limit ${aws_instance.influx.public_ip} --verbose"
       ]
   } 
