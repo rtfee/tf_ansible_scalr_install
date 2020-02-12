@@ -62,7 +62,8 @@ provisioner "remote-exec" {
   provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/install.yml --limit ${self.public_ip} --verbose"
+        "sudo sh -c 'echo mysql1 : ${self.public_ip} >> /etc/ansible/playbooks/install_multi_scalr/vars.yml'"
+ #       "sudo ansible-playbook /etc/ansible/playbooks/install_scalr/install.yml --limit ${self.public_ip} --verbose"
       ]
   }
 
