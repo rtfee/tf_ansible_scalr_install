@@ -272,7 +272,7 @@ resource "null_resource" "create_config" {
   depends_on = [aws_instance_mysql1]
 
   connection {
-        host	= aws_instance.mysql_1.public_ip
+        host	= var.remote_host
         type     = "ssh"
         user     = "ubuntu"
         private_key = "${file(local.ssh_private_key_file)}"
@@ -294,7 +294,7 @@ provisioner "remote-exec" {
 provisioner "remote-exec" {
       inline = [
         "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
-        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/create_secrets.yml --limit ${self.public_ip} --verbose"
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/create_secrets.yml --limit ${aws_instance.mysql1.public_ip}--verbose"
       ]
   }
   
