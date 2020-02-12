@@ -265,3 +265,39 @@ provisioner "remote-exec" {
   }
 
 }
+
+# Copy secrets from proxy to other Servers
+
+resource "null_resource" "create_config" {
+  depends_on = [aws_instance_mysql1]
+
+  connection {
+        host	= aws_instance.mysql_1.public_ip
+        type     = "ssh"
+        user     = "ubuntu"
+        private_key = "${file(local.ssh_private_key_file)}"
+        timeout  = "20m"
+  }
+
+provisioner "file" {
+  source      = "./scripts/script.sh"
+  destination = "/tmp/script.sh"
+}
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo chmod +x /tmp/script.sh",
+    "sudo /tmp/script.sh "
+  ]
+}
+
+provisioner "remote-exec" {
+      inline = [
+        "sudo sh -c 'echo ${self.public_ip}  >> /etc/ansible/hosts'",
+        "sudo ansible-playbook /etc/ansible/playbooks/install_multi_scalr/create_secrets.yml --limit ${self.public_ip} --verbose"
+      ]
+  }
+  
+
+
+}
